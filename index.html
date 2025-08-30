@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Аниме Радио Молдова · милый онлайн‑эфир</title>
+    <meta name="description" content="Самое милое аниме‑радио Молдовы: эфир, плейлист, ведущие, соцсети и тёплая атмосфера." />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root{
+            --bg:#fff7fb;
+            --bg2:#fdf3ff;
+            --card:#ffffff;
+            --ink:#2a1f2e;
+            --accent:#ff7ab6;
+            --accent-2:#b794f6;
+            --accent-3:#79d2ff;
+            --muted:#a08aa6;
+            --ring: 24 95% 74%;
+            --shadow: 0 10px 30px rgba(255,122,182,0.18), 0 4px 14px rgba(183,148,246,0.15);
+            --radius: 20px;
+            --radius-xl: 28px;
+        }
+        *{box-sizing:border-box}
+        html,body{margin:0;height:100%; scroll-behavior:smooth}
+        body{
+            font-family: 'Nunito', system-ui, -apple-system, Segoe UI, Roboto, 'Noto Sans JP', sans-serif;
+            color:var(--ink);
+            background: radial-gradient(1200px 700px at 70% -10%, #ffe3f1 0%, transparent 60%),
+            radial-gradient(1000px 600px at -20% 10%, #e7f6ff 0%, transparent 55%),
+            var(--bg);
+        }
+        a{color:var(--accent); text-decoration:none}
+        a:hover{text-decoration:underline}
+
+        /* Header */
+        header{
+            position:sticky; top:0; z-index:50; backdrop-filter:saturate(1.2) blur(12px);
+            background: linear-gradient(180deg, rgba(255,247,251,0.85), rgba(255,247,251,0.55));
+            border-bottom:1px dashed rgba(255,122,182,0.35);
+        }
+        .wrap{max-width:1100px;margin:0 auto;padding:18px 18px}
+        .row{display:flex; align-items:center; gap:14px; justify-content:space-between}
+        .brand{display:flex; align-items:center; gap:10px}
+        .logo{
+            width:42px; height:42px; border-radius:50%; background: conic-gradient(from 180deg, #ffd1e6, #e0d3ff, #c6efff, #ffd1e6);
+            display:grid; place-items:center; box-shadow: var(--shadow); position:relative; overflow:hidden;
+        }
+        .logo:after{content:'✿'; font-size:22px; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1));}
+        .title{font-weight:800; letter-spacing:.2px}
+        nav{display:flex; gap:14px; flex-wrap:wrap}
+        nav a{padding:10px 14px; border-radius:999px; background:#fff; box-shadow: var(--shadow); font-weight:700}
+
+        .air-btn{
+            display:inline-flex; align-items:center; gap:10px; padding:12px 18px; border-radius:999px;
+            background: linear-gradient(135deg, var(--accent), #ffa1cf); color:white; font-weight:800; border:0; cursor:pointer;
+            box-shadow: 0 8px 18px rgba(255,122,182,0.35);
+            transform: translateZ(0);
+            white-space: nowrap; /* Prevent button text from wrapping */
+        }
+        .air-dot{width:10px; height:10px; background:#ff3b6b; border-radius:50%; animation:blink 1s infinite}
+        @keyframes blink{0%,60%{opacity:1} 61%,100%{opacity:.25}}
+
+        /* Hero */
+        .hero{position:relative; padding:60px 18px 30px}
+        .hero .wrap{display:grid; grid-template-columns: 1.2fr .8fr; gap:24px; align-items:center}
+        .hero-card{
+            background:linear-gradient(135deg, #ffffff, #fff7ff);
+            border-radius:var(--radius-xl); padding:26px; box-shadow: var(--shadow);
+            animation: fadeIn 1s ease-out forwards;
+        }
+        .hero h1{font-size:40px; margin:0 0 10px; line-height:1.1}
+        .hero p{font-size:18px; color:#5e4f60}
+
+        .player{
+            margin-top:12px; display:flex; align-items:center; gap:12px; flex-wrap:wrap
+        }
+        .btn{
+            border:0; cursor:pointer; font-weight:800; padding:12px 16px; border-radius:16px;
+            background:#ffd9ec; box-shadow: var(--shadow); transition: transform .08s ease;
+        }
+        .btn:active{transform:scale(.98)}
+        .btn.primary{background:linear-gradient(135deg, #ffb3d4, #ffd4ea)}
+
+        .now{font-weight:800; padding:10px 14px; border-radius:999px; background:#fff}
+
+        .visualizer{height:60px; display:flex; align-items:flex-end; gap:6px}
+        .bar{width:8px; background:linear-gradient(180deg, #ffa6d1, #b794f6); border-radius:6px 6px 0 0; height:12px}
+
+        .hero-art{
+            position:relative; background:linear-gradient(135deg, #fff, #f8f2ff); border-radius:var(--radius-xl);
+            box-shadow: var(--shadow); padding:20px; height:100%
+        }
+        .kawaii{
+            width:100%; aspect-ratio: 1 / 1; border-radius:18px; background: radial-gradient(circle at 30% 25%, #ffe7f3, transparent 45%),
+            linear-gradient(135deg, #fff5fb, #eef9ff); position:relative; overflow:hidden;
+        }
+        .kawaii-face{position:absolute; inset:0; display:grid; place-items:center; font-size:62px}
+        .kawaii-note{position:absolute; font-size:20px; opacity:.8}
+        .kawaii-note:nth-child(1){top:12%; left:16%; transform:rotate(-10deg)}
+        .kawaii-note:nth-child(2){bottom:18%; right:14%; transform:rotate(8deg)}
+
+        /* Sections */
+        section{padding:30px 18px}
+        h2{font-size:28px; margin:8px 0 16px}
+        .grid{display:grid; gap:16px}
+        .cards{grid-template-columns: repeat(auto-fit, minmax(230px, 1fr))}
+        .card{
+            background:var(--card);
+            border-radius:var(--radius);
+            padding:18px;
+            box-shadow: 0 8px 20px rgba(255,122,182,0.1), 0 4px 10px rgba(183,148,246,0.08);
+            transition: transform .3s ease-out, box-shadow .3s ease-out;
+            cursor: pointer;
+        }
+        .card:hover{
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 12px 30px rgba(255,122,182,0.25), 0 6px 15px rgba(183,148,246,0.2);
+        }
+        .tag{display:inline-block; padding:6px 10px; border-radius:999px; background:#fff0f6; font-weight:700; margin-bottom:8px}
+
+        .list{list-style:none; padding:0; margin:0; display:grid; gap:10px}
+        .list li{padding:12px; border-radius:14px; background:#fff; box-shadow: var(--shadow); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap}
+        .pill{padding:6px 10px; border-radius:999px; background:#f1e9ff; font-weight:700}
+
+        /* Sakura petals */
+        .petal{
+            position:fixed; top:-10vh; width:14px; height:12px;
+            background: radial-gradient(circle at 60% 40%, #fff 0 30%, #ffd1e6 31% 100%);
+            border-radius:60% 40% 70% 30% / 60% 40% 70% 30%; opacity:.85;
+            pointer-events:none;
+            filter:drop-shadow(0 2px 2px rgba(255,122,182,.3));
+            animation: fall linear forwards;
+            z-index:1;
+        }
+        @keyframes fall{ to{ transform: translate3d(var(--dx), 110vh, 0) rotate(var(--rot)); opacity:.95 } }
+        .float{ animation: float 3s ease-in-out infinite alternate }
+        @keyframes float{ from{ transform:translateY(0)} to{ transform:translateY(-6px) } }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Footer */
+        footer{padding:30px 18px 60px; text-align:center; color:#6a5f6e}
+
+        /* Small (original) */
+        @media (max-width: 860px){
+            .hero .wrap{grid-template-columns: 1fr}
+            .hero h1{font-size:32px}
+            .row {flex-direction: column; text-align: center;}
+            .row .brand, .row nav, .row .air-btn {justify-content: center; width: 100%;}
+            .player {flex-direction: column; align-items: stretch;}
+            .player .btn {width: 100%; text-align: center;}
+            .now {text-align: center;}
+        }
+        @media (max-width: 500px) {
+            nav a {
+                padding: 8px 12px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="wrap row">
+        <div class="brand">
+            <div class="logo" aria-hidden="true"></div>
+            <div class="title">Аниме Радио Молдова</div>
+        </div>
+        <nav>
+            <a href="#efir">Эфир</a>
+            <a href="#hosts">Ведущие</a>
+            <a href="#playlist">Музыка</a>
+            <a href="#socials">Соцсети</a>
+            <a href="#contact">Контакты</a>
+        </nav>
+        <button id="airTop" class="air-btn" aria-label="Включить эфир">
+            <span class="air-dot" aria-hidden="true"></span> Эфир
+        </button>
+    </div>
+</header>
+
+<section class="hero" aria-label="Приветствие">
+    <div class="wrap">
+        <div class="hero-card">
+            <span class="tag">Радио • 24/7</span>
+            <h1>Самое милое аниме‑радио из Молдовы ✨</h1>
+            <p>Лёгкая ламповость, сакура в воздухе и музыка, которая греет сердечко. Жми <strong>Эфир</strong> — и добро пожаловать домой.</p>
+            <div class="player" id="efir">
+                <button id="playBtn" class="btn primary">▶︎ Воспроизвести эфир</button>
+                <button id="stopBtn" class="btn">■ Стоп</button>
+                <div class="now" id="nowPlaying">Эфир готов к воспроизведению</div>
+            </div>
+            <div class="visualizer" aria-hidden="true" id="visualizer"></div>
+        </div>
+        <div class="hero-art float">
+            <div class="kawaii">
+                <div class="kawaii-face">(＾▽＾)</div>
+                <div class="kawaii-note">♪</div>
+                <div class="kawaii-note">♬</div>
+            </div>
+            <p style="margin:10px 0 0; color:#6d5c74">Тёплый звук, уютная атмосфера и нежные лепестки сакуры — всё как мы любим.</p>
+        </div>
+    </div>
+</section>
+
+<section id="hosts" aria-label="Ведущие">
+    <div class="wrap">
+        <h2>Радиоведущие</h2>
+        <div class="grid cards">
+            <article class="card">
+                <span class="tag">КУЛЬТОВЫЙ АНИМЕШНИК</span>
+                <h3 style="margin:6px 0 8px">Ламиднист</h3>
+                <p style="margin:0; color:#6a5f6e">Голос эфирной магии, миксует ламповость и вайбы опенингов. Любит чай с сакурой и внезапные джинглы.</p>
+            </article>
+            <article class="card">
+                <span class="tag">Гость эфира</span>
+                <h3 style="margin:6px 0 8px">Юки‑Сан</h3>
+                <p style="margin:0; color:#6a5f6e">Рассказывает истории продакшена, приносит редкие OST и смешные факты.</p>
+            </article>
+            <article class="card">
+                <span class="tag">Ночной чай</span>
+                <h3 style="margin:6px 0 8px">Ото‑Химэ</h3>
+                <p style="margin:0; color:#6a5f6e">Спокойные ночные эфиры: лоу‑фай, джаз, и уютные разговоры с чатиком.</p>
+            </article>
+        </div>
+    </div>
+</section>
+
+<section id="playlist" aria-label="Список музыки">
+    <div class="wrap">
+        <h2>Любимые треки и направления</h2>
+        <div class="grid cards">
+            <div class="card">
+                <h3 style="margin-top:0">Аниме‑опенинги</h3>
+                <ul class="list">
+                    <li><span>「紅蓮華」 — LiSA (Demon Slayer)</span><span class="pill">Энергия</span></li>
+                    <li><span>「again」 — YUI (FMA: Brotherhood)</span><span class="pill">Классика</span></li>
+                    <li><span>「unravel」 — TK (Tokyo Ghoul)</span><span class="pill">Драматик</span></li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3 style="margin-top:0">Lo‑Fi & Chill</h3>
+                <ul class="list">
+                    <li><span>Night Walk in Shibuya</span><span class="pill">Lo‑Fi</span></li>
+                    <li><span>Cherry Blossom Rain</span><span class="pill">Chill</span></li>
+                    <li><span>Sparkle Study Beats</span><span class="pill">Focus</span></li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3 style="margin-top:0">OST & Саундтреки</h3>
+                <ul class="list">
+                    <li><span>Joe Hisaishi — Ghibli Suite</span><span class="pill">Тепло</span></li>
+                    <li><span>Hiroyuki Sawano — Best Themes</span><span class="pill">Эпос</span></li>
+                    <li><span>Radwimps — Your Name</span><span class="pill">Романтика</span></li>
+                </ul>
+            </div>
+        </div>
+        <p style="margin-top:10px; color:#6a5f6e">Эфир живой — треки обновляются. Есть идея? Отправь заявку ниже ♡</p>
+    </div>
+</section>
+
+<section aria-label="Заявки на треки">
+    <div class="wrap">
+        <div class="grid cards">
+            <div class="card">
+                <h3 style="margin-top:0">Предложить трек</h3>
+                <p style="margin:0 0 12px; color:#6a5f6e">Скинь нам любимую композицию — мы постараемся поставить её в эфир.</p>
+                <form action="mailto:anime.radio.md@example.com" method="post" enctype="text/plain" onsubmit="alert('Спасибо! Если у вас настроен почтовый клиент, откроется письмо.');">
+                    <div style="display:grid; gap:10px">
+                        <input required placeholder="Ваше имя" style="padding:12px; border-radius:12px; border:1px dashed #f7a1cf; background:#fff" />
+                        <input required placeholder="Ссылка на трек или название" style="padding:12px; border-radius:12px; border:1px dashed #f7a1cf; background:#fff" />
+                        <textarea placeholder="Комментарий (по желанию)" rows="3" style="padding:12px; border-radius:12px; border:1px dashed #f7a1cf; background:#fff"></textarea>
+                    </div>
+                    <button class="btn primary" style="margin-top:12px">Отправить</button>
+                    <div style="font-size:13px; color:#8a7f8f; margin-top:6px">Совет: на Google Sites отправка через <code>mailto:</code> откроет ваш почтовый клиент.</div>
+                </form>
+            </div>
+            <div class="card">
+                <h3 style="margin-top:0">Расписание</h3>
+                <ul class="list">
+                    <li><span>Утренний вайб</span><span class="pill">08:00–12:00</span></li>
+                    <li><span>Герои опенингов</span><span class="pill">12:00–18:00</span></li>
+                    <li><span>Lo‑Fi учёба</span><span class="pill">18:00–22:00</span></li>
+                    <li><span>Ночной чай</span><span class="pill">22:00–02:00</span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="socials" aria-label="Социальные сети">
+    <div class="wrap">
+        <h2>Мы в соцсетях</h2>
+        <div class="grid cards">
+            <a class="card" href="#" target="_blank" rel="noopener">
+                <h3 style="margin:0 0 6px">YouTube</h3>
+                <p style="margin:0; color:#6a5f6e">Клипчики, записи эфиров и уютные стримы.</p>
+            </a>
+            <a class="card" href="#" target="_blank" rel="noopener">
+                <h3 style="margin:0 0 6px">Telegram</h3>
+                <p style="margin:0; color:#6a5f6e">Анонсы, закулисье и плейлисты недели.</p>
+            </a>
+            <a class="card" href="#" target="_blank" rel="noopener">
+                <h3 style="margin:0 0 6px">Instagram</h3>
+                <p style="margin:0; color:#6a5f6e">Стори с милотой и мемами про OST.</p>
+            </a>
+            <a class="card" href="#" target="_blank" rel="noopener">
+                <h3 style="margin:0 0 6px">TikTok</h3>
+                <p style="margin:0; color:#6a5f6e">Короткие вайбы и опенинги‑вызовы.</p>
+            </a>
+        </div>
+    </div>
+</section>
+
+<section id="contact" aria-label="Контакты">
+    <div class="wrap">
+        <h2>Контакты</h2>
+        <div class="grid cards">
+            <div class="card">
+                <h3 style="margin:0 0 6px">Почта</h3>
+                <p style="margin:0"><a href="mailto:anime.radio.md@example.com">anime.radio.md@example.com</a></p>
+            </div>
+            <div class="card">
+                <h3 style="margin:0 0 6px">Сотрудничество</h3>
+                <p style="margin:0">Джинглы, промо, партнёрства — пишите, сделаем красиво ♡</p>
+            </div>
+            <div class="card">
+                <h3 style="margin:0 0 6px">Заявки ведущих</h3>
+                <p style="margin:0">Хотите к нам в эфир? Заполните форму выше или напишите на почту.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="wrap">
+        <div>© <span id="year"></span> Аниме Радио Молдова · сделано с любовью и сакурой ✿</div>
+        <div style="font-size:12px; margin-top:6px">Если эфир не запускается, проверьте, что браузер разрешает автовоспроизведение.</div>
+    </div>
+</footer>
+
+<audio id="radio" preload="none" crossorigin="anonymous"></audio>
+
+<script>
+    const STREAM_URL = 'https://uk20freenew.listen2myradio.com/live.mp3?typeportmount=s1_16344_stream_466768313';
+    const audio = document.getElementById('radio');
+    const playBtn = document.getElementById('playBtn');
+    const stopBtn = document.getElementById('stopBtn');
+    const airTop = document.getElementById('airTop');
+    const now = document.getElementById('nowPlaying');
+
+    let isPlaying = false;
+
+    // Set audio source once on first user interaction
+    const setSource = () => {
+        if (!audio.src) {
+            audio.src = STREAM_URL;
+        }
+    };
+
+    const togglePlay = async () => {
+        setSource(); // Set the source on first play attempt
+        if (isPlaying) {
+            audio.pause();
+            isPlaying = false;
+            now.textContent = 'Эфир остановлен';
+            playBtn.innerHTML = '▶︎ Воспроизвести эфир';
+            airTop.innerHTML = '<span class="air-dot"></span> Эфир';
+        } else {
+            try {
+                await audio.play();
+                isPlaying = true;
+                now.textContent = 'Играет: эфир Anime Radio Moldova';
+                playBtn.innerHTML = '❚❚ Пауза';
+                airTop.innerHTML = '<span class="air-dot"></span> Играет';
+            } catch (e) {
+                console.warn(e);
+                now.textContent = 'Не удалось запустить. Попробуйте ещё раз.';
+                isPlaying = false;
+                playBtn.innerHTML = '▶︎ Воспроизвести эфир';
+                airTop.innerHTML = '<span class="air-dot"></span> Эфир';
+            }
+        }
+    };
+
+    const stopAudio = () => {
+        audio.pause();
+        audio.currentTime = 0;
+        isPlaying = false;
+        now.textContent = 'Эфир остановлен';
+        playBtn.innerHTML = '▶︎ Воспроизвести эфир';
+        airTop.innerHTML = '<span class="air-dot"></span> Эфир';
+    };
+
+    // Use a single play button for play/pause logic
+    playBtn.addEventListener('click', togglePlay);
+    // Use the stop button for a full stop
+    stopBtn.addEventListener('click', stopAudio);
+    // The top button now also acts as a toggle
+    airTop.addEventListener('click', togglePlay);
+
+    // Visualizer (with real/fake modes)
+    const viz = document.getElementById('visualizer');
+    const bars = Array.from({length: 24}).map(() => {
+        const b = document.createElement('div'); b.className='bar'; viz.appendChild(b); return b;
+    });
+
+    let ctx, analyser, dataArray;
+    function setupAnalyser() {
+        try {
+            const AudioCtx = window.AudioContext || window.webkitAudioContext;
+            if(!AudioCtx) return;
+            ctx = new AudioCtx();
+            const src = ctx.createMediaElementSource(audio);
+            analyser = ctx.createAnalyser();
+            analyser.fftSize = 64;
+            dataArray = new Uint8Array(analyser.frequencyBinCount);
+            src.connect(analyser);
+            analyser.connect(ctx.destination);
+            animateBars();
+        } catch(e) {
+            console.warn('Analyser disabled', e);
+            animateFakeBars(); // Fallback to fake animation
+        }
+    }
+
+    function animateBars() {
+        if (!analyser) return;
+        analyser.getByteFrequencyData(dataArray);
+        const step = Math.floor(dataArray.length / bars.length);
+        bars.forEach((b, i) => {
+            const v = dataArray[i * step] || 0;
+            b.style.height = (8 + v / 3) + 'px';
+        });
+        requestAnimationFrame(animateBars);
+    }
+    
+    function animateFakeBars() {
+        if (!isPlaying) {
+            bars.forEach(b => b.style.height = '8px');
+            requestAnimationFrame(animateFakeBars);
+            return;
+        }
+        bars.forEach((b, i) => {
+            const v = Math.abs(Math.sin(performance.now() / 500 + i)) * 40;
+            b.style.height = (8 + v) + 'px';
+        });
+        requestAnimationFrame(animateFakeBars);
+    }
+
+    // Call setupAnalyser on first user interaction
+    ['click', 'touchstart'].forEach(evt => document.body.addEventListener(evt, setupAnalyser, { once: true }));
+
+    // Sakura petals
+    function spawnPetal() {
+        const p = document.createElement('div'); p.className='petal';
+        const startLeft = Math.random() * 100;
+        const drift = (Math.random() * 40 - 20) + 'vw';
+        const rotate = (Math.random() * 720 - 360) + 'deg';
+        const dur = (12 + Math.random() * 10) + 's';
+        p.style.left = startLeft + 'vw';
+        p.style.setProperty('--dx', drift);
+        p.style.setProperty('--rot', rotate);
+        p.style.animationDuration = dur;
+        document.body.appendChild(p);
+        setTimeout(() => p.remove(), 14000);
+    }
+    setInterval(spawnPetal, 600);
+    for(let i = 0; i < 12; i++) setTimeout(spawnPetal, i * 300);
+
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>

@@ -29,7 +29,7 @@ background: radial-gradient(1200px 600px at 10% 10%, rgba(255,119,162,0.06), tra
 -webkit-font-smoothing:antialiased;
 -moz-osx-font-smoothing:grayscale;
 overflow-x:hidden;
-overflow-y:auto;
+overflow-y:hidden; /* Disable vertical scrolling by default */
 }
 .scene{
 position:relative;
@@ -42,7 +42,10 @@ justify-content:center;
 padding:40px;
 perspective:1000px;
 overflow-x:hidden;
-overflow-y:auto;
+overflow-y:hidden; /* Disable scrolling on scene by default */
+}
+.scene.scroll-enabled {
+    overflow-y:auto; /* Enable scrolling when playlists are active */
 }
 .scene::before{
 content:'';
@@ -241,10 +244,11 @@ transition: transform 0.3s ease;
 .btn.play{
 background:linear-gradient(90deg, rgba(255,122,162,0.14), rgba(255,210,120,0.08));
 box-shadow:0 10px 26px var(--glow);
+color: #fff; /* Set text color to white for play button */
 }
 .btn.play:hover .playCircle{transform:rotate(360deg);}
 .btn.highlight{
-background: linear-gradient(135deg, var(--accent-2), #ffe0a3);
+background: linear-gradient(135deg, var(--accent-2), #ffe0a0);
 color: #040b12;
 box-shadow:0 12px 30px rgba(255,210,120,0.3);
 border:1px solid rgba(255,255,255,0.1);
@@ -266,31 +270,12 @@ color:var(--muted);
 font-size:13px;
 font-family:'Sawarabi Mincho';
 }
-.modal{
-position:fixed;
-inset:0;
-display:none;
-align-items:center;
-justify-content:center;
-background:linear-gradient(180deg, rgba(2,6,23,0.7), rgba(2,6,23,0.9));
-z-index:40;
-backdrop-filter:blur(4px);
-}
-.modal.active{display:flex}
-.modal .frame{
-width:min(960px,94%);
-height:min(640px,84%);
-border-radius:12px;
-overflow:hidden;
-border:1px solid rgba(255,255,255,0.05);
-box-shadow:0 20px 60px rgba(0,0,0,0.5);
-}
 .playlists-section{
 max-width:1100px;
 width:100%;
 margin:40px 0;
 z-index:6;
-display:none;
+display:none; /* Hidden by default */
 opacity:0;
 transform: translateY(20px);
 transition: opacity 0.5s ease, transform 0.5s ease;
@@ -509,13 +494,13 @@ z-index:2;
 <span class="playCircle" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 5v14l11-7L8 5z" fill="#fff"/></svg></span>
 <span>Прямой эфир</span>
 </button>
-<button id="openExternal" class="btn highlight">
+<a href="https://aniradiomd.radio12345.com" target="_blank" class="btn highlight">
 <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M14 3h7v7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
     <path d="M21 3L10 14" stroke="currentColor" stroke-opacity="0.95" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
 <span>Внешний плеер</span>
-</button>
+</a>
 <button id="playlistsBtn" class="btn highlight" aria-pressed="false">
 <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M3 6h18M3 12h18M3 18h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
@@ -597,10 +582,6 @@ z-index:2;
 </div>
 <div class="kanji">桜</div>
 <div class="ornament">Made with Сакура &amp; Lo-Fi vibes</div>
-<!-- modal for external player -->
-<div id="modal" class="modal" role="dialog" aria-modal="true" aria-label="Внешний плеер">
-<div class="frame" id="frame"></div>
-</div>
 <!-- audio element for direct stream -->
 <audio id="liveAudio" preload="none" crossorigin="anonymous">
 <source src="https://uk16freenew.listen2myradio.com/live.mp3?typeportmount=s1_27428_stream_585428507" type="audio/mpeg">
@@ -612,14 +593,12 @@ z-index:2;
 const playBtn = document.getElementById('playBtn');
 const miniPlay = document.getElementById('miniPlay');
 const audio = document.getElementById('liveAudio');
-const openExternal = document.getElementById('openExternal');
-const modal = document.getElementById('modal');
-const frame = document.getElementById('frame');
-const playerBox = document.getElementById('playerBox');
-const equalizer = document.getElementById('equalizer');
 const playlistsBtn = document.getElementById('playlistsBtn');
 const playlistsSection = document.getElementById('playlistsSection');
 const card = document.querySelector('.card');
+const scene = document.querySelector('.scene');
+const playerBox = document.getElementById('playerBox');
+const equalizer = document.getElementById('equalizer');
 
 let playing = false;
 let playlistsVisible = false;
@@ -638,6 +617,16 @@ function setPlaying(state) {
         playerBox.classList.remove('pulse');
         equalizer.style.display = 'none';
     }
+}
+
+// Функция для управления видимостью плейлистов и скроллингом
+function togglePlaylists() {
+    playlistsVisible = !playlistsVisible;
+    playlistsSection.classList.toggle('active', playlistsVisible);
+    card.classList.toggle('playlists-active', playlistsVisible);
+    scene.classList.toggle('scroll-enabled', playlistsVisible);
+    playlistsBtn.querySelector('span:nth-child(2)').textContent = playlistsVisible ? 'Скрыть плейлисты' : 'Плейлисты';
+    playlistsBtn.setAttribute('aria-pressed', playlistsVisible ? 'true' : 'false');
 }
 
 // Обработчик для кнопки "Прямой эфир"
@@ -669,37 +658,12 @@ if (miniPlay) {
     });
 }
 
-// Обработчик для кнопки "Внешний плеер"
-if (openExternal && modal && frame) {
-    openExternal.addEventListener('click', () => {
-        frame.innerHTML = `<iframe src="https://aniradiomd.radio12345.com" frameborder="0" style="width:100%;height:100%"></iframe>`;
-        modal.classList.add('active');
-    });
-}
-
-// Закрытие модального окна
-if (modal) {
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal && frame) {
-            modal.classList.remove('active');
-            frame.innerHTML = '';
-        }
-    });
-}
-
 // Обработчик для кнопки "Плейлисты"
-if (playlistsBtn && playlistsSection && card) {
-    playlistsBtn.addEventListener('click', () => {
-        playlistsVisible = !playlistsVisible;
-        playlistsSection.classList.toggle('active', playlistsVisible);
-        card.classList.toggle('playlists-active', playlistsVisible);
-        playlistsBtn.querySelector('span:nth-child(2)').textContent = playlistsVisible ? 'Скрыть плейлисты' : 'Плейлисты';
-        playlistsBtn.setAttribute('aria-pressed', playlistsVisible ? 'true' : 'false');
-    });
+if (playlistsBtn && playlistsSection && card && scene) {
+    playlistsBtn.addEventListener('click', togglePlaylists);
 }
 
 // Генерация лепестков и звезд
-const scene = document.querySelector('.scene');
 if (scene) {
     const petalsCount = 60;
     for (let i = 0; i < petalsCount; i++) {
@@ -744,14 +708,6 @@ if (audio) {
     audio.addEventListener('pause', () => setPlaying(false));
     audio.addEventListener('error', () => setPlaying(false));
 }
-
-// Закрытие модального окна по клавише Escape
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && modal && modal.classList.contains('active') && frame) {
-        modal.classList.remove('active');
-        frame.innerHTML = '';
-    }
-});
 </script>
 </body>
 </html>
